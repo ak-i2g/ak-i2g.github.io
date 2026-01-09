@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Word Search and Chill | Casual Word Puzzle Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A casual word puzzle game where players discover words in a letter grid using different objectives and power-ups." />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --warm-sand: #f5e6d3;
+      --soft-coral: #e8a87c;
+      --deep-teal: #41b3a3;
+      --muted-sage: #85c1ae;
+      --warm-cream: #fef9f3;
+      --text-dark: #2d3436;
+    }
+
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: var(--warm-cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated letter grid background */
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.07;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 48px);
+      grid-template-rows: repeat(auto-fill, 48px);
+      gap: 8px;
+      padding: 20px;
+    }
+
+    .bg-letter {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--deep-teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .bg-letter:nth-child(odd) {
+      animation-delay: -3s;
+    }
+
+    .bg-letter:nth-child(3n) {
+      color: var(--soft-coral);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      50% { transform: translateY(-8px) rotate(3deg); opacity: 0.6; }
+    }
+
+    /* Main content */
+    .container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    /* Logo/Icon */
+    .app-icon {
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(135deg, var(--deep-teal) 0%, var(--muted-sage) 100%);
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      box-shadow: 
+        0 20px 60px rgba(65, 179, 163, 0.3),
+        0 8px 20px rgba(0, 0, 0, 0.1);
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .app-icon-text {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      letter-spacing: -2px;
+    }
+
+    /* App name */
+    .app-name {
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .app-name span {
+      background: linear-gradient(135deg, var(--deep-teal) 0%, var(--soft-coral) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Description */
+    .description {
+      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      color: #636e72;
+      max-width: 500px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    /* Beta badge */
+    .beta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--soft-coral) 0%, #e67e5a 100%);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 
+        0 10px 40px rgba(232, 168, 124, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 10px 40px rgba(232, 168, 124, 0.4), 0 4px 12px rgba(0, 0, 0, 0.1); }
+      50% { box-shadow: 0 10px 50px rgba(232, 168, 124, 0.6), 0 4px 16px rgba(0, 0, 0, 0.15); }
+    }
+
+    .beta-badge svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Footer */
+    footer {
+      position: absolute;
+      bottom: 24px;
+      font-size: 0.85rem;
+      color: #b2bec3;
+    }
+
+    footer a {
+      color: var(--deep-teal);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    footer a:hover {
+      opacity: 0.7;
+    }
+
+    /* Decorative shapes */
+    .shape {
+      position: fixed;
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, var(--deep-teal), transparent);
+      top: -100px;
+      right: -100px;
+      opacity: 0.15;
+    }
+
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, var(--soft-coral), transparent);
+      bottom: -50px;
+      left: -50px;
+      opacity: 0.2;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Decorative shapes -->
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+
+  <!-- Background letter grid -->
+  <div class="bg-grid" id="letterGrid"></div>
+
+  <div class="container">
+    <!-- App Icon -->
+    <div class="app-icon">
+      <span class="app-icon-text">W</span>
+    </div>
+
+    <!-- App Name -->
+    <h1 class="app-name">
+      <span>Word Search</span><br>and Chill
+    </h1>
+
+    <!-- Description -->
+    <p class="description">
+      A casual word puzzle game where you discover words in a letter grid using different objectives and power-ups.
+    </p>
+
+    <!-- Beta Badge -->
+    <div class="beta-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+      Currently in beta via TestFlight
+    </div>
+
+    <footer>
+      <a href="../">Illusion Interactive</a> · <a href="../privacypolicy/">Privacy</a> · <a href="../support/">Support</a>
+    </footer>
+  </div>
+
+  <script>
+    // Generate random letters for background
+    const grid = document.getElementById('letterGrid');
+    const letters = 'WORDSEARCHANDCHILL'.split('');
+    const count = Math.ceil((window.innerWidth / 56) * (window.innerHeight / 56));
+    
+    for (let i = 0; i < count; i++) {
+      const span = document.createElement('span');
+      span.className = 'bg-letter';
+      span.textContent = letters[Math.floor(Math.random() * letters.length)];
+      span.style.animationDelay = `${Math.random() * 6}s`;
+      grid.appendChild(span);
+    }
+  </script>
+</body>
+</html>
