@@ -2,271 +2,673 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Word Search and Chill | Casual Word Puzzle Game</title>
+  <title>Word Search and Chill | Mobile Word Puzzle Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A casual word puzzle game where players discover words in a letter grid using different objectives and power-ups." />
+  <meta name="description" content="Word Search and Chill is a colorful mobile word puzzle game with timed objectives, cozy library scenes, satisfying word paths, and useful power-ups." />
   <meta name="robots" content="index, follow" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
-
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
     }
 
     :root {
-      --warm-sand: #f5e6d3;
-      --soft-coral: #e8a87c;
-      --deep-teal: #41b3a3;
-      --muted-sage: #85c1ae;
-      --warm-cream: #fef9f3;
-      --text-dark: #2d3436;
+      --cream: #fff4d8;
+      --butter: #ffd66e;
+      --ink: #21242a;
+      --muted: #675f56;
+      --teal: #139c8e;
+      --teal-deep: #08786f;
+      --wood: #b95d13;
+      --orange: #f08018;
+      --blue: #176fb9;
+      --pink: #ea5ec6;
+      --line: rgba(83, 53, 23, 0.18);
+      --shadow: 0 26px 70px rgba(88, 48, 14, 0.22);
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Nunito', system-ui, sans-serif;
-      background: var(--warm-cream);
-      color: var(--text-dark);
+      margin: 0;
+      font-family: ui-rounded, "SF Pro Rounded", "Avenir Next", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255, 244, 216, 0.94), rgba(255, 236, 191, 0.82)),
+        repeating-linear-gradient(90deg, rgba(185, 93, 19, 0.08) 0 1px, transparent 1px 72px),
+        repeating-linear-gradient(0deg, rgba(19, 156, 142, 0.07) 0 1px, transparent 1px 72px),
+        var(--cream);
       min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
     }
 
-    /* Animated letter grid background */
-    .bg-grid {
-      position: fixed;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .nav-wrap {
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0.07;
-      pointer-events: none;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, 48px);
-      grid-template-rows: repeat(auto-fill, 48px);
+      z-index: 20;
+      border-bottom: 1px solid rgba(83, 53, 23, 0.1);
+      background: rgba(255, 244, 216, 0.88);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      width: min(1120px, calc(100% - 32px));
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      width: 42px;
+      aspect-ratio: 1;
+      display: block;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.78);
+      background: #473b2f;
+      box-shadow: 0 10px 24px rgba(88, 48, 14, 0.2);
+      object-fit: cover;
+      object-position: center 34%;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
       gap: 8px;
-      padding: 20px;
+      color: #51493f;
+      font-weight: 750;
+      font-size: 0.94rem;
     }
 
-    .bg-letter {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--deep-teal);
-      display: flex;
+    .nav-links a {
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      background: rgba(255, 255, 255, 0.55);
+      outline: none;
+    }
+
+    .hero {
+      width: min(1120px, calc(100% - 32px));
+      min-height: clamp(560px, calc(100vh - 112px), 640px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.86fr);
       align-items: center;
-      justify-content: center;
-      animation: float 6s ease-in-out infinite;
+      gap: clamp(28px, 6vw, 84px);
+      padding: clamp(28px, 6vw, 62px) 0 40px;
     }
 
-    .bg-letter:nth-child(odd) {
-      animation-delay: -3s;
-    }
-
-    .bg-letter:nth-child(3n) {
-      color: var(--soft-coral);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      50% { transform: translateY(-8px) rotate(3deg); opacity: 0.6; }
-    }
-
-    /* Main content */
-    .container {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 24px;
-      text-align: center;
-    }
-
-    /* Logo/Icon */
-    .app-icon {
-      width: 140px;
-      height: 140px;
-      background: linear-gradient(135deg, var(--deep-teal) 0%, var(--muted-sage) 100%);
-      border-radius: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 32px;
-      box-shadow: 
-        0 20px 60px rgba(65, 179, 163, 0.3),
-        0 8px 20px rgba(0, 0, 0, 0.1);
-      animation: breathe 4s ease-in-out infinite;
-    }
-
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
-
-    .app-icon-text {
-      font-size: 3.5rem;
-      font-weight: 800;
-      color: white;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      letter-spacing: -2px;
-    }
-
-    /* App name */
-    .app-name {
-      font-size: clamp(2rem, 8vw, 3.5rem);
-      font-weight: 800;
-      color: var(--text-dark);
-      margin-bottom: 16px;
-      line-height: 1.1;
-    }
-
-    .app-name span {
-      background: linear-gradient(135deg, var(--deep-teal) 0%, var(--soft-coral) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Description */
-    .description {
-      font-size: clamp(1.1rem, 3vw, 1.35rem);
-      color: #636e72;
-      max-width: 500px;
-      line-height: 1.6;
-      margin-bottom: 40px;
-    }
-
-    /* Beta badge */
-    .beta-badge {
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: linear-gradient(135deg, var(--soft-coral) 0%, #e67e5a 100%);
-      color: white;
-      padding: 14px 28px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1rem;
-      box-shadow: 
-        0 10px 40px rgba(232, 168, 124, 0.4),
-        0 4px 12px rgba(0, 0, 0, 0.1);
-      animation: pulse 3s ease-in-out infinite;
+      margin: 0 0 18px;
+      color: var(--teal-deep);
+      font-size: 0.88rem;
+      font-weight: 900;
+      text-transform: uppercase;
     }
 
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 10px 40px rgba(232, 168, 124, 0.4), 0 4px 12px rgba(0, 0, 0, 0.1); }
-      50% { box-shadow: 0 10px 50px rgba(232, 168, 124, 0.6), 0 4px 16px rgba(0, 0, 0, 0.15); }
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--orange);
     }
 
-    .beta-badge svg {
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(3.1rem, 7.2vw, 6.1rem);
+      line-height: 0.9;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 580px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.06rem, 2vw, 1.28rem);
+      line-height: 1.68;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .mascot-note {
+      max-width: 470px;
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      margin-top: 22px;
+      padding: 12px 14px 12px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: 0 14px 32px rgba(88, 48, 14, 0.1);
+    }
+
+    .mascot-note img {
+      width: 72px;
+      aspect-ratio: 1;
+      display: block;
+      object-fit: cover;
+      object-position: center 34%;
+      border-radius: 18px;
+    }
+
+    .mascot-note span {
+      color: #51493f;
+      font-size: 0.95rem;
+      font-weight: 850;
+      line-height: 1.35;
+    }
+
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      font-weight: 900;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+      white-space: nowrap;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .button.primary {
+      color: #fff;
+      background: #111820;
+      box-shadow: 0 16px 34px rgba(17, 24, 32, 0.22);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.62);
+      border-color: var(--line);
+    }
+
+    .button svg {
       width: 20px;
       height: 20px;
+      flex: 0 0 auto;
     }
 
-    /* Footer */
-    footer {
+    .hero-art {
+      position: relative;
+      min-height: 540px;
+      display: grid;
+      place-items: center;
+    }
+
+    .phone {
+      position: relative;
+      z-index: 2;
+      width: min(276px, 76vw);
+      aspect-ratio: 838 / 1626;
+      padding: 12px;
+      border-radius: 36px;
+      background: #25282e;
+      box-shadow: var(--shadow);
+      transform: rotate(2deg);
+    }
+
+    .phone img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 26px;
+      object-fit: cover;
+    }
+
+    .float-shot {
       position: absolute;
-      bottom: 24px;
-      font-size: 0.85rem;
-      color: #b2bec3;
+      width: 124px;
+      overflow: hidden;
+      border: 7px solid #25282e;
+      border-radius: 24px;
+      background: #25282e;
+      box-shadow: 0 18px 48px rgba(88, 48, 14, 0.2);
     }
 
-    footer a {
-      color: var(--deep-teal);
-      text-decoration: none;
-      transition: opacity 0.2s;
+    .float-shot img {
+      display: block;
+      width: 100%;
     }
 
-    footer a:hover {
-      opacity: 0.7;
+    .float-shot.one {
+      top: 44px;
+      left: 4%;
+      transform: rotate(-8deg);
     }
 
-    /* Decorative shapes */
-    .shape {
-      position: fixed;
-      border-radius: 50%;
-      z-index: 0;
-      pointer-events: none;
+    .float-shot.two {
+      right: 0;
+      bottom: 52px;
+      transform: rotate(7deg);
     }
 
-    .shape-1 {
-      width: 300px;
-      height: 300px;
-      background: linear-gradient(135deg, var(--deep-teal), transparent);
-      top: -100px;
-      right: -100px;
-      opacity: 0.15;
+    .section {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 70px 0;
     }
 
-    .shape-2 {
-      width: 200px;
-      height: 200px;
-      background: linear-gradient(135deg, var(--soft-coral), transparent);
-      bottom: -50px;
-      left: -50px;
-      opacity: 0.2;
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4.6vw, 3.45rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-heading p {
+      margin: 13px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.06rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .mascot-panel {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.36fr) minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(24px, 5vw, 58px);
+      padding: clamp(24px, 5vw, 46px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.36)),
+        rgba(255, 244, 216, 0.72);
+      box-shadow: 0 22px 56px rgba(88, 48, 14, 0.13);
+    }
+
+    .mascot-panel img {
+      width: min(260px, 100%);
+      display: block;
+      justify-self: center;
+      border-radius: 8px;
+      box-shadow: 0 22px 46px rgba(88, 48, 14, 0.2);
+    }
+
+    .mascot-panel p {
+      max-width: 640px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 1.06rem;
+    }
+
+    .feature {
+      min-height: 220px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 1.18rem;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(190px, 1fr));
+      gap: 16px;
+      overflow-x: auto;
+      padding: 4px 2px 14px;
+      scroll-snap-type: x proximity;
+    }
+
+    .shot {
+      min-width: 190px;
+      overflow: hidden;
+      border: 1px solid rgba(83, 53, 23, 0.2);
+      border-radius: 8px;
+      background: #25282e;
+      box-shadow: 0 20px 48px rgba(88, 48, 14, 0.17);
+      scroll-snap-align: start;
+    }
+
+    .shot img {
+      width: 100%;
+      display: block;
+    }
+
+    .download {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 24px;
+      padding: clamp(24px, 5vw, 42px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(19, 156, 142, 0.92), rgba(8, 120, 111, 0.96)),
+        #08786f;
+      box-shadow: var(--shadow);
+    }
+
+    .download h2 {
+      max-width: 680px;
+    }
+
+    .download p {
+      max-width: 620px;
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      line-height: 1.65;
+    }
+
+    .download-logo {
+      width: 132px;
+      display: block;
+      filter: drop-shadow(0 14px 20px rgba(17, 24, 32, 0.2));
+    }
+
+    .footer {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 44px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--line);
+      color: #6d6258;
+      font-size: 0.94rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .footer a:hover,
+    .footer a:focus-visible {
+      color: var(--teal-deep);
+      outline: none;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .download {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-art {
+        min-height: 540px;
+        order: -1;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .mascot-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .download-logo {
+        width: 150px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 13px 0;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .actions,
+      .button {
+        width: 100%;
+      }
+
+      .mascot-note {
+        grid-template-columns: 56px minmax(0, 1fr);
+      }
+
+      .mascot-note img {
+        width: 56px;
+        border-radius: 14px;
+      }
+
+      .hero-art {
+        min-height: 440px;
+      }
+
+      .phone {
+        width: min(244px, 70vw);
+        transform: rotate(0);
+      }
+
+      .float-shot {
+        width: 112px;
+      }
+
+      .float-shot.one {
+        top: 18px;
+        left: -4px;
+      }
+
+      .float-shot.two {
+        right: -4px;
+        bottom: 22px;
+      }
+
+      .screenshots {
+        grid-template-columns: repeat(4, 76vw);
+      }
+
+      .download-logo {
+        width: 132px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.001ms !important;
+      }
     }
   </style>
 </head>
-
 <body>
-  <!-- Decorative shapes -->
-  <div class="shape shape-1"></div>
-  <div class="shape shape-2"></div>
+  <header class="nav-wrap">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="../" aria-label="Illusion Interactive home">
+        <img class="brand-mark" src="../assets/wordsearchandchill/owl.jpg" alt="" />
+        <span>Word Search and Chill</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="../support/">Support</a>
+      </div>
+    </nav>
+  </header>
 
-  <!-- Background letter grid -->
-  <div class="bg-grid" id="letterGrid"></div>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Available on Google Play</p>
+        <h1 id="hero-title">Find words fast. Keep the chill.</h1>
+        <p class="hero-copy">
+          A bright mobile word puzzle set in a cozy library, with timed objectives, colorful word paths, and handy power-ups for the tricky boards.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="https://play.google.com/store/apps/details?id=com.illusion.wordsearchandchill&amp;hl=en_IN" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 3.8v16.4c0 .7.8 1.1 1.4.7l12.9-8.2c.6-.4.6-1.2 0-1.6L6.4 2.9C5.8 2.5 5 3 5 3.8Z" fill="currentColor"/>
+            </svg>
+            Get it on Google Play
+          </a>
+          <a class="button secondary" href="#screenshots">See gameplay</a>
+        </div>
+        <div class="mascot-note">
+          <img src="../assets/wordsearchandchill/owl.jpg" alt="" />
+          <span>The word-book owl brings the cozy library mood into every quick puzzle break.</span>
+        </div>
+      </div>
 
-  <div class="container">
-    <!-- App Icon -->
-    <div class="app-icon">
-      <span class="app-icon-text">W</span>
+      <div class="hero-art" aria-label="Word Search and Chill gameplay screenshots">
+        <div class="float-shot one" aria-hidden="true">
+          <img src="../assets/wordsearchandchill/loading.jpg" alt="" decoding="async" />
+        </div>
+        <div class="phone">
+          <img src="../assets/wordsearchandchill/board-clean.jpg" alt="Word Search and Chill gameplay board showing a level timer, objectives, letter tiles, and power-ups." decoding="async" />
+        </div>
+        <div class="float-shot two" aria-hidden="true">
+          <img src="../assets/wordsearchandchill/board-celebration.jpg" alt="" decoding="async" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="section-heading">
+        <h2 id="features-title">A word search with a little spark.</h2>
+        <p>Each level gives you a clear target, a running timer, and a board full of satisfying connections to spot.</p>
+      </div>
+      <div class="features">
+        <article class="feature" style="--accent: var(--orange)">
+          <strong>Objective-led levels</strong>
+          <p>Find specific word lengths, target counts, and special goals while the timer keeps the pace lively.</p>
+        </article>
+        <article class="feature" style="--accent: var(--teal)">
+          <strong>Colorful word paths</strong>
+          <p>Swipe through letters and watch completed words light up the board with bright, chunky ribbons.</p>
+        </article>
+        <article class="feature" style="--accent: var(--pink)">
+          <strong>Power-ups when needed</strong>
+          <p>Use boosts like extra time, letter help, and hints to recover from tough boards without losing the mood.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="mascot-title">
+      <div class="mascot-panel">
+        <img src="../assets/wordsearchandchill/owl.jpg" alt="Word Search and Chill owl mascot holding a green word book." loading="lazy" decoding="async" />
+        <div>
+          <h2 id="mascot-title">Meet the word-book owl.</h2>
+          <p>The mascot fits the game’s cozy study-room world: curious, bookish, and playful without making the page feel loud. It works best as a warm guide around the game, while the screenshots keep showing the actual puzzle experience.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="screenshots" aria-labelledby="screenshots-title">
+      <div class="section-heading">
+        <h2 id="screenshots-title">Screens from the game.</h2>
+        <p>Cozy library backgrounds, bold letter tiles, quick objectives, and that tiny victory burst when the last word lands.</p>
+      </div>
+      <div class="screenshots">
+        <figure class="shot">
+          <img src="../assets/wordsearchandchill/loading.jpg" alt="Word Search and Chill loading screen with colorful letter tiles." loading="lazy" decoding="async" />
+        </figure>
+        <figure class="shot">
+          <img src="../assets/wordsearchandchill/board-clean.jpg" alt="Gameplay board before words are selected, showing timer, target panel, and power-ups." loading="lazy" decoding="async" />
+        </figure>
+        <figure class="shot">
+          <img src="../assets/wordsearchandchill/board-paths.jpg" alt="Gameplay board with multiple colored word paths selected across the letter grid." loading="lazy" decoding="async" />
+        </figure>
+        <figure class="shot">
+          <img src="../assets/wordsearchandchill/board-celebration.jpg" alt="Gameplay board with confetti after finding several target words." loading="lazy" decoding="async" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="download-title">
+      <div class="download">
+        <div>
+          <h2 id="download-title">Ready for a quick round?</h2>
+          <p>Download Word Search and Chill on Google Play and jump into a cozy word hunt whenever you have a few minutes.</p>
+        </div>
+        <img class="download-logo" src="../assets/brand/illusion-interactive-games-trimmed.png" alt="Illusion Interactive Games" />
+        <a class="button primary" href="https://play.google.com/store/apps/details?id=com.illusion.wordsearchandchill&amp;hl=en_IN" target="_blank" rel="noopener">Open Google Play</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 Illusion Interactive</span>
+    <div class="footer-links">
+      <a href="../">Studio</a>
+      <a href="../privacypolicy/">Privacy Policy</a>
+      <a href="../datadeletion/">Data Deletion</a>
+      <a href="../support/">Support</a>
     </div>
-
-    <!-- App Name -->
-    <h1 class="app-name">
-      <span>Word Search</span><br>and Chill
-    </h1>
-
-    <!-- Description -->
-    <p class="description">
-      A casual word puzzle game where you discover words in a letter grid using different objectives and power-ups.
-    </p>
-
-    <!-- Beta Badge -->
-    <div class="beta-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-      Currently in beta via TestFlight
-    </div>
-
-    <footer>
-      <a href="../">Illusion Interactive</a> · <a href="../privacypolicy/">Privacy</a> · <a href="../support/">Support</a>
-    </footer>
-  </div>
-
-  <script>
-    // Generate random letters for background
-    const grid = document.getElementById('letterGrid');
-    const letters = 'WORDSEARCHANDCHILL'.split('');
-    const count = Math.ceil((window.innerWidth / 56) * (window.innerHeight / 56));
-    
-    for (let i = 0; i < count; i++) {
-      const span = document.createElement('span');
-      span.className = 'bg-letter';
-      span.textContent = letters[Math.floor(Math.random() * letters.length)];
-      span.style.animationDelay = `${Math.random() * 6}s`;
-      grid.appendChild(span);
-    }
-  </script>
+  </footer>
 </body>
 </html>
