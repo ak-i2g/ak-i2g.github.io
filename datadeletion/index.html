@@ -36,7 +36,7 @@
   </header>
   <main class="container" id="main">
     <h1>Data Deletion Request</h1>
-    <p><strong>Last updated:</strong> August 10, 2026</p>
+    <p><strong>Last updated:</strong> September 25, 2026</p>
 
     <p>
       Illusion Interactive (“we”, “our”, or “us”) respects your privacy and gives you
@@ -46,19 +46,25 @@
 
     <h2>What Data Can Be Deleted</h2>
     <ul>
-      <li>Gameplay progress stored on our servers (if applicable)</li>
+      <li>Your anonymous account and associated cloud saves, progress, rewards, preferences, and app-held purchase entitlements</li>
       <li>User identifiers associated with analytics data</li>
-      <li>Crash reports and diagnostics linked to your user ID</li>
+      <li>Technical diagnostics linked to your user ID, where collected and under our control</li>
       <li>Any support-related data you have shared with us</li>
     </ul>
 
-    <h2>What Data Cannot Be Deleted</h2>
+    <h2>Store Records &amp; Retention Exceptions</h2>
     <ul>
-      <li>Purchase and transaction records handled by Google Play or Apple App Store</li>
+      <li>Purchase and transaction records held by Google Play or Apple App Store are managed by those providers and are not deleted by deleting your game data</li>
       <li>Data that must be retained for legal, security, or fraud-prevention purposes</li>
     </ul>
 
     <h2>How to Request Data Deletion</h2>
+    <p>
+      Use the in-app account-deletion option to delete your anonymous account and
+      associated game data, subject to the retention exceptions above. Uninstalling
+      the app alone does not request deletion of cloud data. You can also contact us
+      using the email process below.
+    </p>
     <div class="highlight">
       <p>
         To request deletion of your data, please send an email to:
@@ -88,8 +94,11 @@
 
     <h2>Third-Party Services</h2>
     <p>
-      Our apps use third-party services such as Google AdMob, Firebase Analytics, and
-      Firebase Crashlytics. Upon processing a valid request, we will remove or anonymize
+      Our apps use Google AdMob, Google Ads, Google’s User Messaging Platform,
+      Google Analytics for Firebase, Firebase Authentication, Cloud Firestore,
+      Firebase Cloud Messaging, and Firebase Remote Config. The current iOS build of
+      Word Search &amp; Chill does not include Firebase Crashlytics.
+      Upon processing a valid request, we will remove or anonymize
       personal data under our control and take reasonable steps regarding data processed
       on our behalf where applicable. Third-party providers may retain certain data under
       their own policies or where required for security, fraud prevention, legal
@@ -100,10 +109,18 @@
       our <a href="../privacypolicy/">Privacy Policy</a>.
     </p>
 
-    <h2>Account-Free Usage</h2>
+    <h2>Anonymous Accounts &amp; Purchase Restoration</h2>
     <p>
-      Our apps do not require users to create accounts. Data deletion is handled
-      using the in-app User ID to identify and process requests.
+      Firebase Authentication creates an anonymous player ID without requiring email
+      or password registration. Game data stored in Firestore is linked to that ID;
+      “anonymous” does not mean the records cannot be linked to a player. We use the
+      in-app User ID to identify data for email deletion requests.
+    </p>
+    <p>
+      Deleting game data does not itself refund purchases. To restore an eligible
+      No Ads purchase, use the app’s purchase-restoration option with the same store
+      account. Restoration may recreate your app-held entitlement and related purchase
+      record, but does not restore deleted gameplay progress.
     </p>
 
     <h2>Contact</h2>
