@@ -153,3 +153,4 @@ bold-win.com, 1189, RESELLER, 71746737d0bab951
 lijit.com, 528770, RESELLER, fafdf38b16bf6b2b
 lijit.com, 606973, RESELLER, fafdf38b16bf6b2b
 ogury.com, 065d4ff5-a269-44be-9634-9d4d7af2dfc3, RESELLER
+facebook.com, 316926175793794, RESELLER, c3e20eee3f780d68
