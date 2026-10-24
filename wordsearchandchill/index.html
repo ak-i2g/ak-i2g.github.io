@@ -2,10 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Word Search and Chill | Mobile Word Puzzle Game</title>
+  <title>Word Search &amp; Chill | Mobile Word Puzzle Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Word Search and Chill is a colorful mobile word puzzle game with timed objectives, cozy library scenes, satisfying word paths, and useful power-ups." />
+  <meta name="description" content="Word Search &amp; Chill is a colorful mobile word puzzle game with timed objectives, cozy library scenes, satisfying word paths, and useful power-ups." />
   <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#fff4d8" />
+  <link rel="canonical" href="https://illusioninteractive.games/wordsearchandchill/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Illusion Interactive" />
+  <meta property="og:title" content="Word Search &amp; Chill | Mobile Word Puzzle Game" />
+  <meta property="og:description" content="A cozy library, a quick word hunt, and Quill for company. Discover Word Search &amp; Chill on Google Play." />
+  <meta property="og:url" content="https://illusioninteractive.games/wordsearchandchill/" />
+  <meta property="og:image" content="https://illusioninteractive.games/feature-graphic-4096x2304.jpg" />
+  <meta property="og:image:width" content="4096" />
+  <meta property="og:image:height" content="2304" />
+  <meta property="og:image:alt" content="Word Search &amp; Chill game artwork" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Word Search &amp; Chill | Mobile Word Puzzle Game" />
+  <meta name="twitter:description" content="A cozy library, a quick word hunt, and Quill for company. Available on Google Play." />
+  <meta name="twitter:image" content="https://illusioninteractive.games/feature-graphic-4096x2304.jpg" />
+  <meta name="twitter:image:alt" content="Word Search &amp; Chill game artwork" />
   <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml" />
   <style>
     * {
@@ -29,6 +45,7 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 100px;
     }
 
     body {
@@ -42,6 +59,10 @@
         var(--cream);
       min-height: 100vh;
     }
+
+    .skip-link { position: absolute; top: -100px; left: 16px; z-index: 30; padding: 12px 18px; background: var(--ink); color: var(--cream); }
+    .skip-link:focus { position: fixed; top: 12px; }
+    a:focus-visible { outline: 3px solid var(--teal-deep); outline-offset: 5px; }
 
     a {
       color: inherit;
@@ -310,11 +331,31 @@
       font-size: 1.06rem;
     }
 
-    .features {
+    .play-section { border-top: 1px solid var(--line); }
+
+    .play-guide {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(36px, 7vw, 100px);
+      padding-top: 12px;
     }
+
+    .play-board { margin: 0; text-align: center; }
+    .play-board img {
+      display: block;
+      width: min(280px, 100%);
+      height: auto;
+      margin-inline: auto;
+      border-radius: 9px;
+      box-shadow: 0 12px 30px rgba(88, 48, 14, .12);
+    }
+    .play-board figcaption { margin-top: 16px; color: var(--muted); font-size: .84rem; }
+    .play-steps { margin: 0; padding: 0; list-style: none; }
+    .play-steps li { padding: 26px 0; border-top: 1px solid var(--line); }
+    .play-steps li:first-child { padding-top: 0; border-top: 0; }
+    .play-steps h3 { margin: 0 0 12px; font-size: clamp(1.35rem, 2.8vw, 1.75rem); font-weight: 700; letter-spacing: -.025em; }
+    .play-steps p { margin: 0; max-width: 430px; color: var(--muted); line-height: 1.75; font-size: 1rem; }
 
     .mascot-panel {
       display: grid;
@@ -332,6 +373,8 @@
 
     .mascot-panel img {
       width: min(260px, 100%);
+      aspect-ratio: 1;
+      object-fit: cover;
       display: block;
       justify-self: center;
       border-radius: 8px;
@@ -346,27 +389,6 @@
       font-size: 1.06rem;
     }
 
-    .feature {
-      min-height: 220px;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-top: 4px solid var(--accent);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.58);
-    }
-
-    .feature strong {
-      display: block;
-      margin-bottom: 12px;
-      font-size: 1.18rem;
-    }
-
-    .feature p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
     .screenshots {
       display: grid;
       grid-template-columns: repeat(4, minmax(190px, 1fr));
@@ -377,6 +399,7 @@
     }
 
     .shot {
+      margin: 0;
       min-width: 190px;
       overflow: hidden;
       border: 1px solid rgba(83, 53, 23, 0.2);
@@ -460,12 +483,9 @@
 
       .hero-art {
         min-height: 540px;
-        order: -1;
       }
 
-      .features {
-        grid-template-columns: 1fr;
-      }
+      .play-guide { gap: 32px; }
 
       .mascot-panel {
         grid-template-columns: 1fr;
@@ -525,9 +545,11 @@
         bottom: 22px;
       }
 
-      .screenshots {
-        grid-template-columns: repeat(4, 76vw);
-      }
+      .play-guide { grid-template-columns: 1fr; gap: 30px; }
+      .play-board img { width: min(240px, 74vw); }
+      .play-steps li { padding: 22px 0; }
+      .screenshots { grid-template-columns: repeat(4, 76vw); }
+      html { scroll-padding-top: 150px; }
 
       .download-logo {
         width: 160px;
@@ -548,21 +570,22 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="nav-wrap">
     <nav class="nav" aria-label="Primary navigation">
       <a class="brand" href="../" aria-label="Illusion Interactive home">
         <img class="brand-mark" src="../assets/wordsearchandchill/owl.jpg" alt="" />
-        <span>Word Search and Chill</span>
+        <span>Word Search &amp; Chill</span>
       </a>
       <div class="nav-links">
-        <a href="#features">Features</a>
+        <a href="#features">How to play</a>
         <a href="#screenshots">Screenshots</a>
         <a href="../support/">Support</a>
       </div>
     </nav>
   </header>
 
-  <main>
+  <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div>
         <p class="eyebrow">Available on Google Play</p>
@@ -581,16 +604,16 @@
         </div>
         <div class="mascot-note">
           <img src="../assets/wordsearchandchill/owl.jpg" alt="" />
-          <span>The word-book owl brings the cozy library mood into every quick puzzle break.</span>
+          <span>Meet Quill, your bookish companion for a quick word hunt.</span>
         </div>
       </div>
 
-      <div class="hero-art" aria-label="Word Search and Chill gameplay screenshots">
+      <div class="hero-art" aria-label="Word Search &amp; Chill gameplay screenshots">
         <div class="float-shot one" aria-hidden="true">
           <img src="../assets/wordsearchandchill/loading.jpg" alt="" decoding="async" />
         </div>
         <div class="phone">
-          <img src="../assets/wordsearchandchill/board-clean.jpg" alt="Word Search and Chill gameplay board showing a level timer, objectives, letter tiles, and power-ups." decoding="async" />
+          <img src="../assets/wordsearchandchill/board-clean.jpg" alt="Word Search &amp; Chill gameplay board showing a level timer, objectives, letter tiles, and power-ups." decoding="async" />
         </div>
         <div class="float-shot two" aria-hidden="true">
           <img src="../assets/wordsearchandchill/board-celebration.jpg" alt="" decoding="async" />
@@ -598,33 +621,30 @@
       </div>
     </section>
 
-    <section class="section" id="features" aria-labelledby="features-title">
+    <section class="section play-section" id="features" aria-labelledby="features-title">
       <div class="section-heading">
-        <h2 id="features-title">A word search with a little spark.</h2>
-        <p>Each level gives you a clear target, a running timer, and a board full of satisfying connections to spot.</p>
+        <h2 id="features-title">Your next word is on the board.</h2>
+        <p>A target to reach, a timer to beat, and a few helpful boosts along the way.</p>
       </div>
-      <div class="features">
-        <article class="feature" style="--accent: var(--orange)">
-          <strong>Objective-led levels</strong>
-          <p>Find specific word lengths, target counts, and special goals while the timer keeps the pace lively.</p>
-        </article>
-        <article class="feature" style="--accent: var(--teal)">
-          <strong>Colorful word paths</strong>
-          <p>Swipe through letters and watch completed words light up the board with bright, chunky ribbons.</p>
-        </article>
-        <article class="feature" style="--accent: var(--pink)">
-          <strong>Power-ups when needed</strong>
-          <p>Use boosts like extra time, letter help, and hints to recover from tough boards without losing the mood.</p>
-        </article>
+      <div class="play-guide">
+        <figure class="play-board">
+          <img src="../assets/wordsearchandchill/board-paths.jpg" width="519" height="1000" alt="A round of Word Search &amp; Chill with a target of two four-letter words and coloured paths on the board." loading="lazy" decoding="async" />
+          <figcaption>A round in Word Search &amp; Chill.</figcaption>
+        </figure>
+        <ol class="play-steps">
+          <li><h3>Check your target.</h3><p>Look above the grid to see what the level asks for. You might need words of a certain length, a target count, or a special goal.</p></li>
+          <li><h3>Trace the words you find.</h3><p>Swipe through the letters to make a word. Completed words leave a coloured path across the grid, so you can see each find.</p></li>
+          <li><h3>Keep an eye on the clock.</h3><p>Reach the target before time runs out. If you get stuck, extra time, letter help, and hints can help you through a tricky board.</p></li>
+        </ol>
       </div>
     </section>
 
     <section class="section" aria-labelledby="mascot-title">
       <div class="mascot-panel">
-        <img src="../assets/wordsearchandchill/owl.jpg" alt="Word Search and Chill owl mascot holding a green word book." loading="lazy" decoding="async" />
+        <img src="../assets/wordsearchandchill/owl.jpg" alt="Quill, the Word Search &amp; Chill owl, holding a green word book." loading="lazy" decoding="async" />
         <div>
-          <h2 id="mascot-title">Meet the word-book owl.</h2>
-          <p>The mascot fits the game’s cozy study-room world: curious, bookish, and playful without making the page feel loud. It works best as a warm guide around the game, while the screenshots keep showing the actual puzzle experience.</p>
+          <h2 id="mascot-title">Meet Quill.</h2>
+          <p>Your bookish companion for a cozy word-hunting break. Settle into the library with Quill, then see how many words you can find.</p>
         </div>
       </div>
     </section>
@@ -636,7 +656,7 @@
       </div>
       <div class="screenshots">
         <figure class="shot">
-          <img src="../assets/wordsearchandchill/loading.jpg" alt="Word Search and Chill loading screen with colorful letter tiles." loading="lazy" decoding="async" />
+          <img src="../assets/wordsearchandchill/loading.jpg" alt="Word Search &amp; Chill loading screen with colorful letter tiles." loading="lazy" decoding="async" />
         </figure>
         <figure class="shot">
           <img src="../assets/wordsearchandchill/board-clean.jpg" alt="Gameplay board before words are selected, showing timer, target panel, and power-ups." loading="lazy" decoding="async" />
@@ -654,7 +674,7 @@
       <div class="download">
         <div>
           <h2 id="download-title">Ready for a quick round?</h2>
-          <p>Download Word Search and Chill on Google Play and jump into a cozy word hunt whenever you have a few minutes.</p>
+          <p>Download Word Search &amp; Chill on Google Play and jump into a cozy word hunt whenever you have a few minutes.</p>
         </div>
         <img class="download-logo" src="../assets/brand/illusion-wordmark.png" alt="Illusion Interactive" />
         <a class="button primary" href="https://play.google.com/store/apps/details?id=com.illusion.wordsearchandchill&amp;hl=en_IN" target="_blank" rel="noopener">Open Google Play</a>

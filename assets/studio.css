@@ -157,6 +157,42 @@ a:focus-visible {
   color:#e0d6ef;
 }
 
+.hero-actions {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:18px 24px;
+}
+
+.hero-actions .text-link {
+  font-size:14px;
+  gap:18px;
+}
+
+.button.button-ivory {
+  background:var(--ivory);
+  border-color:var(--ivory);
+  color:var(--purple);
+}
+
+.button.button-ivory:hover {
+  background:var(--paper);
+}
+
+.studio-story>p {
+  max-width:660px;
+  margin:26px 0 0;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.75;
+}
+
+.studio-story>p a {
+  color:var(--purple);
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+
 .hero-game {
   margin:0;
   display:grid;
